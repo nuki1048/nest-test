@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "nest build && node scripts/bundler.mjs",
+    "build": "nest build && node scripts/bundler.mjs && mkdir -p public/public && cp -r dist/public/* public/public/",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -20,6 +20,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@rollup/rollup-linux-x64-gnu": "4.59.0",
     "@adminjs/express": "^6.1.1",
     "@adminjs/nestjs": "^7.0.0",
     "adminjs": "^7.4.0",
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "@adminjs/bundler": "^3.0.0",
+    "@vercel/node": "^3.2.0",
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.18.0",
     "@nestjs/cli": "^11.0.0",

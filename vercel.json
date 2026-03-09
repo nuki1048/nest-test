@@ -6,32 +6,7 @@
   "env": {
     "ADMIN_JS_SKIP_BUNDLE": "true"
   },
-  "builds": [
-    {
-      "src": "dist/vercel.js",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": ["dist/**/*"]
-      }
-    },
-    {
-      "src": "dist/public/**/*",
-      "use": "@vercel/static",
-      "config": {
-        "outputDirectory": "dist/public"
-      }
-    }
-  ],
-  "routes": [
-    {
-      "src": "/public/(.*)",
-      "dest": "/dist/public/$1",
-      "methods": ["GET"]
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/dist/vercel.js",
-      "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
-    }
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/api/$1" }
   ]
 }
