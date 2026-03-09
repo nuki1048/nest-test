@@ -9,6 +9,9 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url));
 const rootDir = join(__dirname, '..');
 
 async function main() {
+  // Ensure public directory exists (Vercel expects it)
+  await mkdir(join(rootDir, 'public'), { recursive: true });
+
   // 1. Bundle AdminJS assets
   await bundle({
     destinationDir: join(rootDir, 'dist', 'public'),

@@ -3,6 +3,7 @@
   "buildCommand": "yarn build",
   "installCommand": "yarn install",
   "framework": null,
+  "outputDirectory": "public",
   "env": {
     "ADMIN_JS_SKIP_BUNDLE": "true"
   },
