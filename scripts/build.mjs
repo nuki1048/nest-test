@@ -17,7 +17,7 @@ async function main() {
 
   try {
     await bundle({
-      destinationDir: distPublicDir,
+      destinationDir: 'dist/public',
       componentLoader: new ComponentLoader(),
     });
   } catch (err) {
