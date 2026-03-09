@@ -14,6 +14,14 @@ const authenticate = async (email: string, password: string) => {
   return null;
 };
 
+const getAssetsCDN = (): string | undefined => {
+  if (process.env.ADMIN_JS_SKIP_BUNDLE !== 'true') return undefined;
+  const url = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}/public`
+    : process.env.ASSETS_CDN;
+  return url ? `${url}/` : undefined;
+};
+
 @Module({
   imports: [
     // AdminJS version 7 is ESM-only. In order to import it, you have to use dynamic imports.
@@ -24,6 +32,7 @@ const authenticate = async (email: string, password: string) => {
           adminJsOptions: {
             rootPath: '/admin',
             resources: [],
+            assetsCDN: getAssetsCDN(),
           },
           auth: {
             authenticate,
