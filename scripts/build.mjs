@@ -9,23 +9,28 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url));
 const rootDir = join(__dirname, '..');
 
 async function main() {
-  // Ensure public directory exists (Vercel expects it)
-  await mkdir(join(rootDir, 'public'), { recursive: true });
+  const publicDir = join(rootDir, 'public');
+  const publicAssetsDir = join(publicDir, 'public');
+  const distPublicDir = join(rootDir, 'dist', 'public');
 
-  // 1. Bundle AdminJS assets
-  await bundle({
-    destinationDir: join(rootDir, 'dist', 'public'),
-    componentLoader: new ComponentLoader(),
-  });
+  await mkdir(publicDir, { recursive: true });
 
-  // 2. Copy to public/public for Vercel static serving
-  const srcDir = join(rootDir, 'dist', 'public');
-  const destDir = join(rootDir, 'public', 'public');
+  try {
+    await bundle({
+      destinationDir: distPublicDir,
+      componentLoader: new ComponentLoader(),
+    });
+  } catch (err) {
+    console.error('AdminJS bundler failed:', err);
+    throw err;
+  }
 
-  if (existsSync(srcDir)) {
-    await mkdir(destDir, { recursive: true });
-    await cp(srcDir, destDir, { recursive: true });
+  if (existsSync(distPublicDir)) {
+    await mkdir(publicAssetsDir, { recursive: true });
+    await cp(distPublicDir, publicAssetsDir, { recursive: true });
     console.log('Copied AdminJS assets to public/public/');
+  } else {
+    throw new Error('Bundler did not produce output in dist/public');
   }
 }
 
