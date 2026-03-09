@@ -11,6 +11,7 @@ let cachedApp: express.Application;
 async function bootstrap(): Promise<express.Application> {
   if (!cachedApp) {
     const expressApp = express();
+    expressApp.set('trust proxy', 1);
     const nestApp = await NestFactory.create(
       AppModule,
       new ExpressAdapter(expressApp),
@@ -26,8 +27,13 @@ export default async function handler(
   res: VercelResponse,
 ): Promise<void> {
   const app = await bootstrap();
-  const originalUrl = (req as { url?: string }).url ?? '/';
-  const url = originalUrl.replace(/^\/api/, '') || '/';
-  const expressReq = { ...req, url } as express.Request;
+  const rawUrl = (req as { url?: string }).url ?? req.url ?? '/';
+  const path = rawUrl.replace(/^\/api/, '') || '/';
+  const expressReq = Object.assign(req, {
+    url: path,
+    originalUrl: path,
+    path,
+    baseUrl: '',
+  }) as express.Request;
   app(expressReq, res as express.Response);
 }
