@@ -3,6 +3,11 @@
   "buildCommand": "yarn build",
   "installCommand": "yarn install",
   "framework": null,
+  "functions": {
+    "api/[[...path]].ts": {
+      "includeFiles": "node_modules/@rollup/rollup-linux-x64-gnu/**"
+    }
+  },
   "env": {
     "ADMIN_JS_SKIP_BUNDLE": "true"
   },

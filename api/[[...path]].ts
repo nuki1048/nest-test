@@ -1,4 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+// Force-include Rollup Linux binary for AdminJS (prevents runtime "Cannot find module" on Vercel)
+import '@rollup/rollup-linux-x64-gnu';
 import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import express from 'express';
