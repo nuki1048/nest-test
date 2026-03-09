@@ -27,8 +27,17 @@ export default async function handler(
   res: VercelResponse,
 ): Promise<void> {
   const app = await bootstrap();
-  const rawUrl = (req as { url?: string }).url ?? req.url ?? '/';
-  const path = rawUrl.replace(/^\/api/, '') || '/';
+  const query = req.query as { path?: string | string[] };
+  const pathSegments = query.path;
+  const pathFromQuery = Array.isArray(pathSegments)
+    ? '/' + pathSegments.join('/')
+    : undefined;
+  const rawUrl =
+    (req as { url?: string }).url ?? req.url ?? pathFromQuery ?? '/';
+  const path =
+    pathFromQuery ??
+    (typeof rawUrl === 'string' ? rawUrl.replace(/^\/api/, '') : null) ??
+    '/';
   const expressReq = Object.assign(req, {
     url: path,
     originalUrl: path,
